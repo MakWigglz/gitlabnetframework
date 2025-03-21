@@ -1,0 +1,23 @@
+image: python:3.9
+stages:
+ - build
+ - test
+
+build_job:
+ stage: build
+ script:
+   - python -m venv venv
+   - source venv/bin/activate
+   - pip install -r requirements.txt
+ artifacts:
+   paths:
+     - venv/
+
+test_job:
+ stage: test
+ dependencies:
+   - build_job
+ script:
+   - source venv/bin/activate
+   - pip install pytest
+   - pytest tests/
