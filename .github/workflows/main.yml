@@ -1,15 +1,26 @@
-stages:
-  - build
+name: CI Pipeline
 
-build:
-  stage: build
-  image: python:3.9-slim # Use a Python 3.9 Docker image
-  script:
-    - python -m venv venv
-    - source venv/bin/activate
-    - pip install --upgrade pip
-    - pip install -r requirements.txt
-    - pip install pytest
-    - pytest tests/
-  only:
-    - main # Run only on the main branch
+on:
+ push:
+   branches: [ main ]
+
+jobs:
+ build:
+   runs-on: ubuntu-latest
+   steps:
+     - uses: actions/checkout@v3
+     - name: Set up Python 3.9
+       uses: actions/setup-python@v3
+       with:
+         python-version: "3.9"
+     - name: Install dependencies
+       run: |
+         python -m venv cicdvenv
+         source cicdvenv/bin/activate
+         pip install --upgrade pip
+         pip install -r requirements.txt
+         - name: Test with pytest
+          run: |
+         source venv/bin/activate
+         pip install pytest
+         pytest tests/
